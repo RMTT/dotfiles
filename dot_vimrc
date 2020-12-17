@@ -9,7 +9,13 @@ set nocompatible
 filetype plugin indent on  " Load plugins according to detected filetype.
 syntax on                  " Enable syntax highlighting.
 
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
 set autoindent             " Indent according to previous line.
+set smartindent
+set cindent
 set expandtab              " Use spaces instead of tabs.
 set softtabstop =4         " Tab key indents by 4 spaces.
 set shiftwidth  =4         " >> indents by 4 spaces.
@@ -39,25 +45,57 @@ set synmaxcol   =200       " Only highlight the first 200 columns.
 
 set list                   " Show non-printable characters.
 if has('multi_byte') && &encoding ==# 'utf-8'
-  let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
+    let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
 else
-  let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
+    let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
 endif
 
 " The fish shell is not very compatible to other shells and unexpectedly
 " breaks things that use 'shell'.
 if &shell =~# 'fish$'
-  set shell=/bin/bash
+    set shell=/bin/bash
 endif
 
 " Put all temporary files under the same directory.
 " https://github.com/mhinz/vim-galore#handling-backup-swap-undo-and-viminfo-files
-set backup
-set backupdir   =$HOME/.vim/files/backup/
-set backupext   =-vimbackup
-set backupskip  =
-set directory   =$HOME/.vim/files/swap//
-set updatecount =100
-set undofile
-set undodir     =$HOME/.vim/files/undo/
-set viminfo     ='100,n$HOME/.vim/files/info/viminfo
+if !has('nvim')
+    set backup
+    set backupdir   =$HOME/.vim/files/backup/
+    set backupext   =-vimbackup
+    set backupskip  =
+    set directory   =$HOME/.vim/files/swap//
+    set updatecount =100
+    set undofile
+    set undodir     =$HOME/.vim/files/undo/
+    set viminfo     ='100,n$HOME/.vim/files/info/viminfo
+endif
+
+" nvim specified
+if has('nvim')
+    tnoremap <Esc> <C-\><C-n>
+endif
+
+" set cursor
+au VimLeave * set guicursor=a:ver1-blinkwait700-blinkon400-blinkoff250
+
+
+" encoding
+set encoding=utf-8
+
+" key mapping
+map <C-x> :NERDTreeToggle<CR>
+
+" exit vim when only nerdtree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'vim-airline/vim-airline'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Initialize plugin system
+call plug#end()
