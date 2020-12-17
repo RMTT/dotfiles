@@ -43,6 +43,10 @@ set wrapscan               " Searches wrap around end-of-file.
 set report      =0         " Always report changed lines.
 set synmaxcol   =200       " Only highlight the first 200 columns.
 
+set relativenumber  " relative number
+set number
+set number relativenumber
+
 set list                   " Show non-printable characters.
 if has('multi_byte') && &encoding ==# 'utf-8'
     let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
@@ -96,6 +100,20 @@ Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-airline/vim-airline'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'luochen1990/rainbow'
+let g:rainbow_active = 1
+
+Plug 'arcticicestudio/nord-vim'
+Plug 'junegunn/fzf.vim'
+Plug 'yegappan/mru'
+Plug 'Chiel92/vim-autoformat'
 
 " Initialize plugin system
 call plug#end()
+
+" set colortheme
+colorscheme nord
+
+" Set formatting shortcut
+nnoremap <M-f> :Autoformat<CR>
+inoremap <M-f> <Esc>:Autoformat<CR>
