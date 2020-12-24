@@ -107,6 +107,12 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'junegunn/fzf.vim'
 Plug 'yegappan/mru'
 Plug 'Chiel92/vim-autoformat'
+Plug 'lervag/vimtex'
+" Snippets engine
+Plug 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plug 'honza/vim-snippets'
 
 " Initialize plugin system
 call plug#end()
@@ -114,6 +120,14 @@ call plug#end()
 " set colortheme
 colorscheme nord
 
+" Snippets Trigger
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-p>"
+let g:UltiSnipsJumpBackwardTrigger="<c-n>"
+
 " Set formatting shortcut
 nnoremap <M-f> :Autoformat<CR>
 inoremap <M-f> <Esc>:Autoformat<CR>
+
+" set search shortcuts
+nnoremap <F3> :set hlsearch!<CR>
