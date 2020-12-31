@@ -13,6 +13,7 @@ syntax on                  " Enable syntax highlighting.
 set foldmethod=indent
 set foldlevel=99
 
+set mouse=a
 set autoindent             " Indent according to previous line.
 set smartindent
 set cindent
@@ -116,6 +117,7 @@ Plug 'fannheyward/coc-pyright', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-html', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
 
 " Initialize plugin system
 call plug#end()

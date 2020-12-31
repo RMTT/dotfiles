@@ -11,9 +11,9 @@ fi
 # Created by newuser for 5.8
 export http_proxy="http://127.0.0.1:8889"
 export https_proxy=$http_proxy
-export PATH=$PATH:~/bin
 
-alias dotgit='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+# for yarn
+export PATH=$PATH:~/.yarn/bin
 
 SAVEHIST=1000
 HISTFILE=~/.zsh_history
