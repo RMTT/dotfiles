@@ -99,39 +99,47 @@ Plug 'yegappan/mru'
 Plug 'lervag/vimtex'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
-Plug 'Glench/Vim-Jinja2-Syntax'
 
 " Snippets engine
 Plug 'SirVer/ultisnips'
 
-" Snippets are separated from the engine. Add this if you want them:
-Plug 'honza/vim-snippets'
-
 " Indent line
 Plug 'yggdroot/indentline'
-
-" coc extensions
-Plug 'fannheyward/coc-pyright', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-html', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
-Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-pairs', {'do': 'yarn install --frozen-lockfile'}
-Plug 'clangd/coc-clangd', {'do': 'yarn install --frozen-lockfile'}
-Plug 'weirongxu/coc-explorer', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
 
 " Initialize plugin system
 call plug#end()
 
+let g:coc_global_extensions = [
+      \'coc-highlight',
+      \'coc-pyright',
+      \'coc-explorer',
+      \'coc-json', 
+      \'coc-vimtex',
+      \'coc-eslint',
+      \'coc-clangd',
+      \'coc-html',
+      \'coc-tsserver',
+      \'coc-css',
+      \'coc-pairs',
+      \'coc-sql',
+      \'coc-snippets'
+      \]
+
+" setting for coc-snippets
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
 " set colortheme
 colorscheme nord
-
-" Snippets Trigger
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-p>"
-let g:UltiSnipsJumpBackwardTrigger="<c-n>"
 
 " setting search shortcuts
 nnoremap <F3> :set hlsearch!<CR>
