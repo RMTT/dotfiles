@@ -79,7 +79,7 @@ au VimLeave * set guicursor=a:ver1-blinkwait700-blinkon400-blinkoff250
 set encoding=utf-8
 
 " key mapping
-map <C-x> :CocCommand explorer<CR>
+map <A-d> :CocCommand explorer<CR>
 
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
