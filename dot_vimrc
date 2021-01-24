@@ -106,6 +106,12 @@ Plug 'SirVer/ultisnips'
 " Indent line
 Plug 'yggdroot/indentline'
 
+" For jinja2
+Plug 'Glench/Vim-Jinja2-Syntax'
+let g:coc_filetype_map={
+    \ "jinja.html": "html"
+  \ }
+
 " Initialize plugin system
 call plug#end()
 
