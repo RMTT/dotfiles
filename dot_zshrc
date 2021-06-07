@@ -15,9 +15,6 @@ export https_proxy=$http_proxy
 # for yarn
 export PATH=$PATH:~/.yarn/bin
 
-# for GPG
-export GPG_TTY=$(tty)
-
 # for bindkey
 bindkey -e
 

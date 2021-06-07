@@ -1,3 +1,6 @@
 {
-    "explorer.icon.enableNerdfont": true
+    "explorer.icon.enableNerdfont": true,
+    "python.venvPath": ".",
+    "python.formatting.provider": "yapf",
+    "python.linting.flake8Enabled": true
 }
