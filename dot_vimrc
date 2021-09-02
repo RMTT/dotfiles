@@ -101,6 +101,9 @@ Plug 'lervag/vimtex'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
 
+" FLoat terminal
+Plug 'voldikss/vim-floaterm'
+
 " Snippets engine
 Plug 'SirVer/ultisnips'
 
@@ -336,3 +339,13 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 " end for coc ---------------------
+
+" Mappings for floaterm
+map <A-c> <ESC>:FloatermNew<CR>
+tnoremap <silent> <A-c> <C-\><C-n>:FloatermNew<CR>
+map <A-g> <ESC>:FloatermToggle<CR>
+tnoremap <silent> <A-g> <C-\><C-n>:FloatermToggle<CR>
+map <A-n> <ESC>:FloatermNext<CR>
+tnoremap <silent> <A-n> <C-\><C-n>:FloatermNext<CR>
+map <A-p> <ESC>:FloatermPre<CR>
+tnoremap <silent> <A-p> <C-\><C-n>:FloatermPrev<CR>
