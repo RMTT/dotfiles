@@ -7,7 +7,7 @@ syntax on                  " Enable syntax highlighting.
 set foldmethod=indent
 set foldlevel=99
 
-set mouse=a
+set mouse=i
 set autoindent             " Indent according to previous line.
 set smartindent
 set cindent
@@ -100,8 +100,9 @@ Plug 'yegappan/mru'
 Plug 'lervag/vimtex'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 
-" FLoat terminal
+" Float terminal
 Plug 'voldikss/vim-floaterm'
 
 " Snippets engine
@@ -109,6 +110,12 @@ Plug 'SirVer/ultisnips'
 
 " Indent line
 Plug 'yggdroot/indentline'
+
+" code search
+Plug 'mileszs/ack.vim'
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " For jinja2
 Plug 'Glench/Vim-Jinja2-Syntax'
@@ -341,6 +348,8 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 " end for coc ---------------------
 
 " Mappings for floaterm
+let g:floaterm_width=0.6
+let g:floaterm_height=0.8
 map <A-c> <ESC>:FloatermNew<CR>
 tnoremap <silent> <A-c> <C-\><C-n>:FloatermNew<CR>
 map <A-g> <ESC>:FloatermToggle<CR>
@@ -349,3 +358,15 @@ map <A-n> <ESC>:FloatermNext<CR>
 tnoremap <silent> <A-n> <C-\><C-n>:FloatermNext<CR>
 map <A-p> <ESC>:FloatermPre<CR>
 tnoremap <silent> <A-p> <C-\><C-n>:FloatermPrev<CR>
+
+" Mapping for buffers
+nnoremap <A-b> :Buffers<CR>
+inoremap <A-b> <ESC>:Buffers<CR>
+nnoremap <space>h :bprev<CR>
+nnoremap <space>l :bnext<CR>
+
+" exit fzf using esc
+tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
+
+" mapping for fzf
+nnoremap <space>f :Files<CR>
