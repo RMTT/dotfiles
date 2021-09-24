@@ -133,7 +133,7 @@ let g:coc_global_extensions = [
       \'coc-json', 
       \'coc-vimtex',
       \'coc-eslint',
-      \'coc-clangd',
+      \'coc-ccls',
       \'coc-html',
       \'coc-tsserver',
       \'coc-css',
@@ -142,7 +142,8 @@ let g:coc_global_extensions = [
       \'coc-snippets',
       \'coc-sh',
       \'coc-go',
-      \'coc-docker'
+      \'coc-docker',
+      \'coc-java'
       \]
 
 " setting for coc-snippets
