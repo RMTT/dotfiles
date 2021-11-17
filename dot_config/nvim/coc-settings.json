@@ -2,5 +2,33 @@
     "explorer.icon.enableNerdfont": true,
     "python.venvPath": ".",
     "python.formatting.provider": "yapf",
-    "python.linting.flake8Enabled": true
+    "python.linting.flake8Enabled": true,
+    "ccls.completion.detailedLabel": true,
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "filetypes": [
+                "c",
+                "cpp",
+                "cuda",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".ccls-root",
+                "compile_commands.json"
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": ".ccls-cache"
+                },
+                "client": {
+                    "snippetSupport": true
+                },
+                "highlight": {
+                    "lsRanges": true
+                }
+            }
+        }
+    }
 }

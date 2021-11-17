@@ -102,6 +102,10 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 
+" for ccls
+Plug 'maskray/vscode-ccls', {'do': 'yarn install --frozen-lockfile'}
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+
 " Float terminal
 Plug 'voldikss/vim-floaterm'
 
@@ -123,6 +127,10 @@ let g:coc_filetype_map={
     \ "jinja.html": "html"
   \ }
 
+" For bufferline
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'romgrk/barbar.nvim'
+
 " Initialize plugin system
 call plug#end()
 
@@ -142,8 +150,7 @@ let g:coc_global_extensions = [
       \'coc-snippets',
       \'coc-sh',
       \'coc-go',
-      \'coc-docker',
-      \'coc-java'
+      \'coc-docker'
       \]
 
 " setting for coc-snippets
@@ -371,3 +378,21 @@ tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 
 " mapping for fzf
 nnoremap <space>f :Files<CR>
+
+" mapping for barbar
+" Move to previous/next
+nnoremap <silent>    <A-,> :BufferPrevious<CR>
+nnoremap <silent>    <A-.> :BufferNext<CR>
+" Re-order to previous/next
+nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
+nnoremap <silent>    <A->> :BufferMoveNext<CR>
+" Goto buffer in position...
+nnoremap <silent>    <A-1> :BufferGoto 1<CR>
+nnoremap <silent>    <A-2> :BufferGoto 2<CR>
+nnoremap <silent>    <A-3> :BufferGoto 3<CR>
+nnoremap <silent>    <A-4> :BufferGoto 4<CR>
+nnoremap <silent>    <A-5> :BufferGoto 5<CR>
+nnoremap <silent>    <A-6> :BufferGoto 6<CR>
+nnoremap <silent>    <A-7> :BufferGoto 7<CR>
+nnoremap <silent>    <A-8> :BufferGoto 8<CR>
+nnoremap <silent>    <A-9> :BufferLast<CR>
