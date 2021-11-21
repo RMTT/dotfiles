@@ -33,7 +33,9 @@ require('packer').startup(function()
 
     use {'romgrk/barbar.nvim', requires = {'kyazdani42/nvim-web-devicons'}}
 
-    use "numToStr/FTerm.nvim"
+    use 'numToStr/FTerm.nvim'
+
+    use 'tpope/vim-fugitive'
 end)
 
 ---- setting for lualine ----
