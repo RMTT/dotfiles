@@ -174,7 +174,10 @@ require'lspconfig'.efm.setup {
 ---- end ----
 
 ---- ccls ----
-require('lspconfig').ccls.setup {}
+require('lspconfig').ccls.setup {
+    on_attach = on_attach,
+    capabilities = capabilities
+}
 ---- end ----
 ---- end ----
 
