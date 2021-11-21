@@ -169,7 +169,8 @@ require'lspconfig'.efm.setup {
             lua = {{formatCommand = 'lua-format -i', formatStdin = true}},
             python = {{formatCommand = 'yapf', formatStdin = true}}
         }
-    }
+    },
+    filetypes = {'python', 'lua'}
 }
 ---- end ----
 
