@@ -36,6 +36,8 @@ require('packer').startup(function()
     use 'numToStr/FTerm.nvim'
 
     use 'tpope/vim-fugitive'
+
+    use 'regen100/cmake-language-server'
 end)
 
 ---- setting for lualine ----
@@ -153,7 +155,7 @@ lspconfig.pyright.setup {
 }
 
 -- lua language server
-require'lspconfig'.sumneko_lua.setup {
+lspconfig.sumneko_lua.setup {
     on_attach = on_attach,
     capabilities = capabilities,
     cmd = {'lua-language-server'}
@@ -161,21 +163,27 @@ require'lspconfig'.sumneko_lua.setup {
 
 ---- efm support ----
 -- efm is used to lint and format for some lsps which do not support such functions
-require'lspconfig'.efm.setup {
+lspconfig.efm.setup {
     init_options = {documentFormatting = true},
     settings = {
         rootMarkers = {'.git'},
         languages = {
             lua = {{formatCommand = 'lua-format -i', formatStdin = true}},
-            python = {{formatCommand = 'yapf', formatStdin = true}}
+            python = {
+                {formatCommand = 'yapf', formatStdin = true},
+                {lintCommand = 'pylint', lintStdin = false}
+            }
         }
     },
     filetypes = {'python', 'lua'}
 }
 ---- end ----
 
+---- cmake ----
+lspconfig.cmake.setup{}
+
 ---- ccls ----
-require('lspconfig').ccls.setup {
+lspconfig.ccls.setup {
     on_attach = on_attach,
     capabilities = capabilities
 }
