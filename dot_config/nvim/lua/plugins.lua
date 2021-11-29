@@ -38,6 +38,8 @@ require('packer').startup(function()
     use 'tpope/vim-fugitive'
 
     use 'regen100/cmake-language-server'
+
+    use 'editorconfig/editorconfig-vim'
 end)
 
 ---- setting for lualine ----
