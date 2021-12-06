@@ -40,6 +40,8 @@ require('packer').startup(function()
     use 'regen100/cmake-language-server'
 
     use 'editorconfig/editorconfig-vim'
+
+    use {'raghur/vim-ghost', cmd = 'GhostInstall'}
 end)
 
 ---- setting for lualine ----
@@ -51,7 +53,7 @@ vim.g.rainbow_active = 1
 ---- end ----
 
 ---- setting for nord-vim ----
-vim.g.colors_name = 'nord'
+vim.cmd('colorscheme nord')
 ---- end ----
 
 ---- setting for fzf-lua ----
@@ -182,13 +184,10 @@ lspconfig.efm.setup {
 ---- end ----
 
 ---- cmake ----
-lspconfig.cmake.setup{}
+lspconfig.cmake.setup {}
 
 ---- ccls ----
-lspconfig.ccls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities
-}
+lspconfig.ccls.setup {on_attach = on_attach, capabilities = capabilities}
 ---- end ----
 ---- end ----
 

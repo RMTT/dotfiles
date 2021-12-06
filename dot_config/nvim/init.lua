@@ -11,6 +11,7 @@ vim.o.shiftround = true
 vim.o.autowrite = true
 vim.o.report = 0
 vim.o.relativenumber = true
+vim.o.number = true
 
 vim.o.backup = true
 vim.o.backupdir = vim.fn.stdpath('data') .. '/backup'
