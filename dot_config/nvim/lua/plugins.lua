@@ -3,10 +3,9 @@ require('packer').startup(function()
         'nvim-lualine/lualine.nvim',
         requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
-
     use 'luochen1990/rainbow'
 
-    use 'arcticicestudio/nord-vim'
+    use 'shaunsingh/nord.nvim'
 
     use {
         'ibhagwan/fzf-lua',
@@ -42,6 +41,13 @@ require('packer').startup(function()
     use 'editorconfig/editorconfig-vim'
 
     use {'raghur/vim-ghost', cmd = 'GhostInstall'}
+
+    use {
+        'lewis6991/gitsigns.nvim',
+        requires = {
+            'nvim-lua/plenary.nvim'
+        }
+    }
 end)
 
 ---- setting for lualine ----
@@ -169,6 +175,28 @@ lspconfig.efm.setup {
     },
     filetypes = {'python', 'lua'}
 }
+
+require"lspconfig".efm.setup {
+    filetypes = {'sh'},
+    init_options = {documentFormatting = true},
+    settings = {
+        rootMarkers = {".git/"},
+        languages = {
+            sh = {
+                {
+                    lintCommand = 'shellcheck -f gcc -x',
+                    lintSource = 'shellcheck',
+                    lintFormats = {
+                        "%f:%l:%c: %trror: %m",
+                        "%f:%l:%c: %tarning: %m",
+                        "%f:%l:%c: %tote: %m"
+                    },
+                    lintStdin = false
+                }
+            }
+        }
+    }
+}
 ---- end ----
 
 ---- cmake ----
@@ -213,4 +241,8 @@ local top = fterm:new({
 function _G.__fterm_top() top:toggle() end
 vim.api.nvim_set_keymap('n', '<A-p>', '<cmd>lua __fterm_top()<CR>',
                         {silent = true, noremap = true})
+---- end ----
+
+---- setting for gitsigns ----
+require('gitsigns').setup()
 ---- end ----
