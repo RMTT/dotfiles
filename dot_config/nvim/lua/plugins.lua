@@ -121,12 +121,13 @@ local has_words_before = function()
     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 local luasnip = require("luasnip")
+require("luasnip.loaders.from_vscode").lazy_load()
 
 -- Setup nvim-cmp.
 local cmp = require('cmp')
 
 local mappings = {
-    ['<C-p>'] = cmp.mapping(function(fallback)
+    ['<C-n>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
             cmp.select_next_item()
         elseif luasnip.expand_or_jumpable() then
@@ -137,7 +138,7 @@ local mappings = {
             fallback()
         end
     end, { "i", "s" }),
-    ['<C-n>'] = cmp.mapping(function(fallback)
+    ['<C-p>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
             cmp.select_prev_item()
         elseif luasnip.jumpable(-1) then
@@ -247,6 +248,10 @@ lspconfig.ccls.setup { on_attach = on_attach, capabilities = capabilities }
 
 ---- go ----
 lspconfig.gopls.setup { on_attach = on_attach, capabilities = capabilities }
+---- end ----
+
+---- terraform ----
+lspconfig.terraformls.setup { on_attach = on_attach, capabilities = capabilities }
 ---- end ----
 
 ---- lua-tree setting ----
