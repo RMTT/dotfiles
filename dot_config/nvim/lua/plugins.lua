@@ -1,3 +1,4 @@
+local util = require('lspconfig/util')
 require('packer').startup(function()
     use 'wbthomason/packer.nvim'
     use {
@@ -76,6 +77,9 @@ vim.cmd('highlight NonText ctermbg=none guibg=none')
 vim.api.nvim_set_keymap('n', '<space>f',
     "<cmd>lua require('fzf-lua').files()<CR>",
     { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<A-b>',
+    "<cmd>lua require('fzf-lua').grep()<CR>",
+    { noremap = true, silent = true })
 ---- end ----
 
 ---- setting for nvim-lspconfig ----
@@ -104,7 +108,8 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl',
+        '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
@@ -189,7 +194,6 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protoco
 lspconfig.pyright.setup {
     on_attach = on_attach,
     capabilities = capabilities,
-    init_options = { formatters = { yapf = { command = 'yapf' } } }
 }
 
 -- lua language server
@@ -204,38 +208,14 @@ lspconfig.sumneko_lua.setup {
 lspconfig.efm.setup {
     init_options = { documentFormatting = true },
     settings = {
-        rootMarkers = { '.git' },
+        rootMarkers = { 'pyproject.toml', '.git' },
         languages = {
-            lua = { { formatCommand = 'lua-format -i', formatStdin = true } },
             python = {
                 { formatCommand = 'yapf', formatStdin = true },
-                { lintCommand = 'pylint', lintStdin = false }
             }
         }
     },
-    filetypes = { 'python', 'lua' }
-}
-
-require "lspconfig".efm.setup {
-    filetypes = { 'sh' },
-    init_options = { documentFormatting = true },
-    settings = {
-        rootMarkers = { ".git/" },
-        languages = {
-            sh = {
-                {
-                    lintCommand = 'shellcheck -f gcc -x',
-                    lintSource = 'shellcheck',
-                    lintFormats = {
-                        "%f:%l:%c: %trror: %m",
-                        "%f:%l:%c: %tarning: %m",
-                        "%f:%l:%c: %tote: %m"
-                    },
-                    lintStdin = false
-                }
-            }
-        }
-    }
+    filetypes = { 'python' }
 }
 ---- end ----
 
@@ -256,10 +236,35 @@ lspconfig.terraformls.setup { on_attach = on_attach, capabilities = capabilities
 
 ---- lua-tree setting ----
 require('nvim-tree').setup {
+    sort_by = "case_sensitive",
+    view = {
+        adaptive_size = true,
+        mappings = {
+            list = {
+                { key = "u", action = "dir_up" },
+            },
+        },
+    },
     git = {
         enable = true,
         ignore = true
-    }
+    },
+    renderer = {
+        indent_markers = {
+            enable = true,
+            icons = {
+                corner = "└",
+                edge = "│",
+                item = "│",
+                none = " "
+            },
+        },
+        icons = {
+            show = {
+                folder_arrow = false,
+            }
+        }
+    },
 }
 vim.api.nvim_set_keymap('n', '<A-d>', '<cmd>NvimTreeToggle<CR>',
     { silent = true, noremap = true })
@@ -287,13 +292,13 @@ vim.api.nvim_set_keymap('n', '<A-g>', '<cmd>lua __fterm_gitui()<CR>',
 
 local top = fterm:new({
     ft = 'fterm_top',
-    cmd = "bpytop",
+    cmd = "btop",
     dimensions = { height = 0.9, width = 0.9 }
 })
 -- Use this to toggle btop in a floating terminal
 function _G.__fterm_top() top:toggle() end
 
-vim.api.nvim_set_keymap('n', '<A-p>', '<cmd>lua __fterm_top()<CR>',
+vim.api.nvim_set_keymap('n', '<A-t>', '<cmd>lua __fterm_top()<CR>',
     { silent = true, noremap = true })
 ---- end ----
 
