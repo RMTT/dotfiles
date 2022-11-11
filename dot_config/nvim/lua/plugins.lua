@@ -3,7 +3,7 @@ require('packer').startup(function()
     use 'wbthomason/packer.nvim'
     use {
         'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+        requires = { 'kyazdani42/nvim-web-devicons'}
     }
     use 'luochen1990/rainbow'
 
@@ -188,7 +188,7 @@ cmp.setup.filetype('gitcommit', {
 ---- end ----
 
 ---- config lsp server ----
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- pyright
 lspconfig.pyright.setup {
@@ -233,6 +233,10 @@ lspconfig.gopls.setup { on_attach = on_attach, capabilities = capabilities }
 ---- terraform ----
 lspconfig.terraformls.setup { on_attach = on_attach, capabilities = capabilities }
 ---- end ----
+
+--- rust-analyzer --
+require'lspconfig'.rust_analyzer.setup{}
+--- end ---
 
 ---- lua-tree setting ----
 require('nvim-tree').setup {
