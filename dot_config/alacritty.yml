@@ -3,7 +3,7 @@ env:
 
 window:
   decorations: full
-  gtk_theme_variant: dark
+  decorations_theme_variant: dark
   opacity: 0.95
   dimensions:
     columns: 90
