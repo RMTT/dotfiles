@@ -57,6 +57,8 @@ require('packer').startup(function()
             'cappyzawa/starlark.vim'
         }
     }
+
+    use 'sbdchd/neoformat'
 end)
 
 ---- setting for lualine ----
