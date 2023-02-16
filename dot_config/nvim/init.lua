@@ -1,4 +1,4 @@
-utility = require('utility')
+local utility = require('utility')
 
 ---- Options ----
 vim.o.mouse = 'a'

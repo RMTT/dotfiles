@@ -3,11 +3,11 @@ require('packer').startup(function()
     use 'wbthomason/packer.nvim'
     use {
         'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons'}
+        requires = { 'kyazdani42/nvim-web-devicons' }
     }
     use 'luochen1990/rainbow'
 
-    use 'shaunsingh/nord.nvim'
+    use 'folke/tokyonight.nvim'
 
     use {
         'ibhagwan/fzf-lua',
@@ -23,7 +23,11 @@ require('packer').startup(function()
     use 'hrsh7th/cmp-cmdline'
     use 'hrsh7th/nvim-cmp'
     -- For luasnip users.
-    use 'L3MON4D3/LuaSnip'
+    use({
+        "L3MON4D3/LuaSnip",
+        -- install jsregexp (optional!:).
+        run = "make install_jsregexp"
+    })
     use 'saadparwaiz1/cmp_luasnip'
     ---- end ----
 
@@ -59,6 +63,14 @@ require('packer').startup(function()
     }
 
     use 'sbdchd/neoformat'
+
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = function()
+            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+            ts_update()
+        end,
+    }
 end)
 
 ---- setting for lualine ----
@@ -70,7 +82,7 @@ vim.g.rainbow_active = 1
 ---- end ----
 
 ---- setting for nord-vim ----
-vim.cmd('colorscheme nord')
+vim.cmd('colorscheme tokyonight-night')
 vim.cmd('highlight Normal ctermbg=none guibg=none')
 vim.cmd('highlight NonText ctermbg=none guibg=none')
 ---- end ----
@@ -103,20 +115,22 @@ local on_attach = function(client, bufnr)
 
     -- Mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl',
-        '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    local bufopts = { noremap = true, silent = true, buffer = bufnr }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+    vim.keymap.set('n', '<space>wl', function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, bufopts)
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+    vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+    vim.keymap.set('n', '<A-f>', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 ---- end ----
 
@@ -127,6 +141,7 @@ local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
+
 local luasnip = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -148,8 +163,8 @@ local mappings = {
     ['<C-p>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
             cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then
-            luasnip.jump(-1)
+        elseif luasnip.jumpable( -1) then
+            luasnip.jump( -1)
         else
             fallback()
         end
@@ -199,10 +214,32 @@ lspconfig.pyright.setup {
 }
 
 -- lua language server
-lspconfig.sumneko_lua.setup {
+require 'lspconfig'.lua_ls.setup {
     on_attach = on_attach,
     capabilities = capabilities,
-    cmd = { 'lua-language-server' }
+    settings = {
+        Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = 'LuaJIT',
+            },
+            format = {
+                enable = true
+            },
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = { 'vim' },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
 }
 
 ---- efm support ----
@@ -217,7 +254,7 @@ lspconfig.efm.setup {
             }
         }
     },
-    filetypes = { 'python' }
+    filetypes = { 'python', }
 }
 ---- end ----
 
@@ -237,12 +274,18 @@ lspconfig.terraformls.setup { on_attach = on_attach, capabilities = capabilities
 ---- end ----
 
 --- rust-analyzer --
-require'lspconfig'.rust_analyzer.setup{}
+require 'lspconfig'.rust_analyzer.setup { on_attach = on_attach, capabilities = capabilities }
 --- end ---
 
 ---- lua-tree setting ----
+-- disable netrw at the very start of your init.lua (strongly advised)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
+
 require('nvim-tree').setup {
     sort_by = "case_sensitive",
+    sync_root_with_cwd = true,
     view = {
         adaptive_size = true,
         mappings = {
@@ -253,7 +296,7 @@ require('nvim-tree').setup {
     },
     git = {
         enable = true,
-        ignore = true
+        ignore = false
     },
     renderer = {
         indent_markers = {
@@ -311,3 +354,46 @@ vim.api.nvim_set_keymap('n', '<A-t>', '<cmd>lua __fterm_top()<CR>',
 ---- setting for gitsign ----
 require('gitsigns').setup()
 ---- end ----
+
+---- setting for treesitter ----
+require 'nvim-treesitter.configs'.setup {
+    -- A list of parser names, or "all" (the four listed parsers should always be installed)
+    ensure_installed = { "c", "lua", "vim", "help" , "cmake", "python"},
+
+    -- Install parsers synchronously (only applied to `ensure_installed`)
+    sync_install = false,
+
+    -- Automatically install missing parsers when entering buffer
+    -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+    auto_install = true,
+
+    -- List of parsers to ignore installing (for "all")
+    ignore_install = { "make" },
+
+    ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+    -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+
+    highlight = {
+        enable = true,
+
+        -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+        -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+        -- the name of the parser)
+        -- list of language that will be disabled
+        -- disable = { "c", "rust" },
+        -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+        disable = function(lang, buf)
+            local max_filesize = 100 * 1024 -- 100 KB
+            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+            if ok and stats and stats.size > max_filesize then
+                return true
+            end
+        end,
+
+        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+        -- Using this option may slow down your editor, and you may see some duplicate highlights.
+        -- Instead of true it can also be a list of languages
+        additional_vim_regex_highlighting = false,
+    },
+}
