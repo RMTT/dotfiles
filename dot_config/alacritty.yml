@@ -3,7 +3,7 @@ env:
 
 window:
   decorations: full
-  decorations_theme_variant: dark
+  decorations_theme_variant: Dark
   opacity: 0.98
   dimensions:
     columns: 90

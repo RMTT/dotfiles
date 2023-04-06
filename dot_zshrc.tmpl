@@ -15,14 +15,11 @@ export EDITOR=nvim
 export http_proxy={{ .http_proxy | quote }}
 export https_proxy={{ .https_proxy | quote }}
 
-# for dircolors
-test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
-
 # for yarn
 export PATH=$PATH:~/.yarn/bin
 
 # for editor
-if [ -f "/usr/bin/nvim" ]; then 
+if [ -f "/usr/bin/nvim" ]; then
     export EDITOR=nvim
 elif [ -f "/usr/bin/vim" ]; then
     export EDITOR=vim
@@ -84,5 +81,12 @@ eval "$(direnv hook zsh)"
 # load go binary
 export PATH="$HOME/go/bin:$PATH"
 
+# for dircolors
+test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
+
 # gpg settings
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+# alias
+alias ls="exa"
+alias pua="paru -Syyu"

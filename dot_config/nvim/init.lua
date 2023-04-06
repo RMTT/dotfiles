@@ -34,6 +34,12 @@ vim.o.encoding = 'utf-8'
 vim.o.completeopt = "menu,menuone,noselect"
 ---- end ----
 
+---- global ----
+
+vim.g.python3_host_prog = "~/.pyenv/versions/nvim/bin/python"
+
+---- end ----
+
 ---- load plugins ----
 require('plugins')
 ---- end ----

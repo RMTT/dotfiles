@@ -10,8 +10,12 @@ require('packer').startup(function()
     use 'folke/tokyonight.nvim'
 
     use {
-        'ibhagwan/fzf-lua',
-        requires = { 'vijaymarupudi/nvim-fzf', 'kyazdani42/nvim-web-devicons' }
+        'pwntester/octo.nvim',
+        requires = {
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim',
+            'kyazdani42/nvim-web-devicons',
+        }
     }
 
     use 'neovim/nvim-lspconfig'
@@ -71,10 +75,22 @@ require('packer').startup(function()
             ts_update()
         end,
     }
+
+    use {
+        'rmagatti/auto-session',
+        config = function()
+            require("auto-session").setup {
+                log_level = "error",
+                auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+            }
+        end
+    }
 end)
 
 ---- setting for lualine ----
-require('lualine').setup { options = { icon_enabled = true, theme = 'nord' } }
+require('lualine').setup {
+    options = { icon_enabled = true, theme = 'tokyonight' },
+    sections = { lualine_c = { require('auto-session-library').current_session_name } } }
 ---- end ----
 
 ---- setting for rainbow ----
@@ -87,13 +103,12 @@ vim.cmd('highlight Normal ctermbg=none guibg=none')
 vim.cmd('highlight NonText ctermbg=none guibg=none')
 ---- end ----
 
----- setting for fzf-lua ----
-vim.api.nvim_set_keymap('n', '<space>f',
-    "<cmd>lua require('fzf-lua').files()<CR>",
-    { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-b>',
-    "<cmd>lua require('fzf-lua').grep()<CR>",
-    { noremap = true, silent = true })
+---- setting for telescope ----
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<space>ff', builtin.find_files, {})
+vim.keymap.set('n', '<space>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<space>fb', builtin.buffers, {})
+vim.keymap.set('n', '<space>fh', builtin.help_tags, {})
 ---- end ----
 
 ---- setting for nvim-lspconfig ----
@@ -163,8 +178,8 @@ local mappings = {
     ['<C-p>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
             cmp.select_prev_item()
-        elseif luasnip.jumpable( -1) then
-            luasnip.jump( -1)
+        elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
         else
             fallback()
         end
@@ -277,6 +292,12 @@ lspconfig.terraformls.setup { on_attach = on_attach, capabilities = capabilities
 require 'lspconfig'.rust_analyzer.setup { on_attach = on_attach, capabilities = capabilities }
 --- end ---
 
+---- nix ----
+require'lspconfig'.nil_ls.setup{}
+--- end ----
+
+---- end for lsp server ----
+
 ---- lua-tree setting ----
 -- disable netrw at the very start of your init.lua (strongly advised)
 vim.g.loaded_netrw = 1
@@ -358,7 +379,7 @@ require('gitsigns').setup()
 ---- setting for treesitter ----
 require 'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all" (the four listed parsers should always be installed)
-    ensure_installed = { "c", "lua", "vim", "help" , "cmake", "python"},
+    ensure_installed = { "c", "lua", "vim", "help", "cmake", "python" },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -375,7 +396,6 @@ require 'nvim-treesitter.configs'.setup {
 
     highlight = {
         enable = true,
-
         -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
         -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
         -- the name of the parser)
@@ -389,7 +409,6 @@ require 'nvim-treesitter.configs'.setup {
                 return true
             end
         end,
-
         -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -397,3 +416,8 @@ require 'nvim-treesitter.configs'.setup {
         additional_vim_regex_highlighting = false,
     },
 }
+---- end ----
+
+---- settings for octo ----
+require "octo".setup()
+---- end ----
